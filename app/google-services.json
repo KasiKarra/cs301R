@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "313433619512",
+    "project_id": "my-virtual-pantry"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313433619512:android:f5d4439b9b3212c9",
+        "android_client_info": {
+          "package_name": "cs301rclass.myapplicationattempt4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313433619512-04tiscno5is3ubpgfp35fe1bpasqlc32.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cs301rclass.myapplicationattempt4",
+            "certificate_hash": "7ce535cfba37af2b1226d8b5485945b63e8d443c"
+          }
+        },
+        {
+          "client_id": "313433619512-anua71uag5uf2ngfu93j8ohm480i5vqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYlnWz0x_g2jUed9EjxJktgCvffKhydRI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

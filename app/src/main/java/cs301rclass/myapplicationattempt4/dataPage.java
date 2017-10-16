@@ -16,6 +16,8 @@ public class dataPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_page);
+        Toolbar tools = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(tools);
         }
 
 
@@ -34,9 +36,9 @@ public class dataPage extends AppCompatActivity {
         int id = item.getItemId();
 
     //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        //if (id == R.id.action_settings) {
+        //    return true;
+        //}
         if(id == R.id.AddItem)
         {
             Intent intent = new Intent(this, AddItemPage.class);
