@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="@drawable/background"
+=======
+    android:background="@drawable/lowres"
+>>>>>>> a034000a0f0ce8106a03766315f2a5a384bd0c88
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_login"
     tools:layout_editor_absoluteY="81dp"

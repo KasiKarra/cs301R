@@ -27,10 +27,17 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:26.+'
+<<<<<<< HEAD
     compile 'com.google.android.gms:play-services-auth:11.0.4'
     compile 'com.google.firebase:firebase-messaging:11.0.4'
+=======
+    compile 'com.google.firebase:firebase-database:10.0.1'
+>>>>>>> a034000a0f0ce8106a03766315f2a5a384bd0c88
     testCompile 'junit:junit:4.12'
 
     apply plugin: 'com.google.gms.google-services'
 
 }
+
+
+apply plugin: 'com.google.gms.google-services'
