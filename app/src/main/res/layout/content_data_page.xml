@@ -8,4 +8,11 @@
     tools:context="cs301rclass.myapplicationattempt4.dataPage"
     tools:showIn="@layout/activity_data_page">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="220dp"
+        android:layout_height="85dp"
+        android:text="Fire base will implement a dynamic list of your pantry here"
+        tools:layout_editor_absoluteX="72dp"
+        tools:layout_editor_absoluteY="97dp" />
 </android.support.constraint.ConstraintLayout>
