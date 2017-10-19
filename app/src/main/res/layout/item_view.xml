@@ -27,21 +27,23 @@
         android:id="@+id/countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/item_expDate"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:text="10"
         android:textColor="@android:color/holo_green_dark"
         android:textColorLink="@android:color/holo_green_dark"
-        android:textSize="36sp" />
+        android:textSize="36sp"
+        android:layout_alignBottom="@+id/item_expDate"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginEnd="40dp" />
 
     <TextView
         android:id="@+id/item_txtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/item_expDate"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/item_icon"
         android:text="TextView"
-        android:textSize="36sp"
-        android:layout_above="@+id/item_expDate" />
+        android:textSize="24sp" />
 </RelativeLayout>

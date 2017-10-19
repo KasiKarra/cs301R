@@ -170,14 +170,14 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void populateFoodList() {
-        foodList.add(new Food("Banana",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.FRUIT));
-        foodList.add(new Food("apples",1,Color.RED,R.drawable.bananas,"10-24-2017",FoodCategory.FRUIT));
-        foodList.add(new Food("curry",3,Color.ORANGE,R.drawable.bananas,"10-24-2017",FoodCategory.MEAT));
-        foodList.add(new Food("swedish fish",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.SWEET));
-        foodList.add(new Food("sweetpotatoes",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.FRUIT));
-        foodList.add(new Food("chicken",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.MEAT));
-        foodList.add(new Food("mochi",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.SWEET));
-        foodList.add(new Food("chicken sandwiches",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.MEAT));
+        foodList.add(new Food("Banana",5,Color.GREEN,R.drawable.fruit,"10-24-2017",FoodCategory.FRUIT));
+        foodList.add(new Food("apples",1,Color.RED,R.drawable.fruit,"10-24-2017",FoodCategory.FRUIT));
+        foodList.add(new Food("curry",3,Color.ORANGE,R.drawable.meat,"10-24-2017",FoodCategory.MEAT));
+        foodList.add(new Food("swedish fish",5,Color.GREEN,R.drawable.sweet,"10-24-2017",FoodCategory.SWEET));
+        foodList.add(new Food("sweetpotatoes",5,Color.GREEN,R.drawable.veggie,"10-24-2017",FoodCategory.FRUIT));
+        foodList.add(new Food("chicken",5,Color.GREEN,R.drawable.meat,"10-24-2017",FoodCategory.MEAT));
+        foodList.add(new Food("mochi",5,Color.GREEN,R.drawable.sweet,"10-24-2017",FoodCategory.SWEET));
+        foodList.add(new Food("chicken sandwiches",5,Color.GREEN,R.drawable.meat,"10-24-2017",FoodCategory.MEAT));
     }
 
     private void populateListView() {
