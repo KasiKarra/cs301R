@@ -15,14 +15,8 @@
         android:layout_height="0dp"
         android:focusable = "true"
         android:focusableInTouchMode="true"
-        app:layout_constraintRight_toLeftOf="parent"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/Title"
@@ -33,32 +27,19 @@
         android:textSize="22dp"
         android:fontFamily="casual"
         android:layout_marginStart="34dp"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginTop="37dp"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="34dp" />
+        tools:layout_editor_absoluteY="16dp"
+        tools:layout_editor_absoluteX="16dp" />
 
     <EditText
         android:id="@+id/ItemName"
         android:layout_width="0dp"
         android:layout_height="78dp"
-        android:ems="10"
-        android:inputType="text|textShortMessage"
-        android:text="Enter Name of Product Here"
         android:layout_marginEnd="14dp"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="@+id/Date"
-        app:layout_constraintRight_toRightOf="@+id/Date"
-        android:layout_marginTop="86dp"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="89dp"
-        app:layout_constraintLeft_toLeftOf="@+id/Title"
-        app:layout_constraintTop_toTopOf="@+id/Title"
-        android:layout_marginRight="14dp" />
+        android:ems="10"
+        android:hint="Product Name"
+        android:inputType="text|textShortMessage"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="84dp" />
 
     <EditText
         android:id="@+id/Date"
@@ -67,17 +48,10 @@
         android:layout_marginEnd="49dp"
         android:layout_marginStart="48dp"
         android:ems="10"
+        android:hint='Date "DD-MM-YYYY"'
         android:inputType="date"
-        android:text="Enter Expiration Date Here"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toTopOf="@+id/FormatingNote"
-        app:layout_constraintRight_toRightOf="@+id/Title"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="13dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="49dp" />
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="162dp" />
 
     <Button
         android:id="@+id/SubmitButton"
@@ -85,42 +59,73 @@
         android:layout_height="68dp"
         android:layout_marginEnd="27dp"
         android:text="Add ITem To Pantry"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="55dp"
-        android:layout_marginRight="27dp" />
+        tools:layout_editor_absoluteY="418dp"
+        tools:layout_editor_absoluteX="209dp" />
 
     <Button
         android:id="@+id/Cancel"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="150dp"
+        android:layout_height="68dp"
         android:layout_marginEnd="30dp"
-        android:text="Cancel"
-        app:layout_constraintRight_toLeftOf="@+id/SubmitButton"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
         android:layout_marginStart="27dp"
-        app:layout_constraintBottom_toBottomOf="@+id/SubmitButton"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/SubmitButton"
-        android:layout_marginLeft="27dp"
-        android:layout_marginRight="30dp" />
+        android:text="Cancel"
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="418dp" />
 
-    <TextView
-        android:id="@+id/FormatingNote"
-        android:layout_width="250dp"
-        android:layout_height="22dp"
-        android:text='Date must be in "DD-MM-YYYY" format'
-        android:layout_marginEnd="11dp"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="186dp"
-        android:layout_marginRight="11dp" />
+    <RadioButton
+        android:id="@+id/Dairy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:layout_editor_absoluteX="336dp"
+        tools:layout_editor_absoluteY="348dp" />
+
+    <RadioButton
+        android:id="@+id/Grain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="348dp" />
+
+    <RadioButton
+        android:id="@+id/Veggie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="348dp" />
+
+    <RadioButton
+        android:id="@+id/Fruit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:layout_editor_absoluteX="262dp"
+        tools:layout_editor_absoluteY="348dp" />
+
+    <RadioButton
+        android:id="@+id/Sweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="348dp" />
+
+    <RadioButton
+        android:id="@+id/Other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:layout_editor_absoluteX="209dp"
+        tools:layout_editor_absoluteY="348dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="385dp"
+        android:layout_height="99dp"
+        app:srcCompat="@drawable/categories"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="255dp" />
 
 </android.support.constraint.ConstraintLayout>
