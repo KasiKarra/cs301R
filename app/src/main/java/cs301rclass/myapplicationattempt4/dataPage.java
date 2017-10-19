@@ -12,10 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,9 @@ public class dataPage extends AppCompatActivity {
         setSupportActionBar(tools);
         populateFoodList();
         populateListView();
+        registerClickCallback();
         }
+
 
 
     @Override
@@ -57,6 +61,7 @@ public class dataPage extends AppCompatActivity {
         {
             Intent intent = new Intent(this, AddItemPage.class);
             startActivity(intent);
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -78,7 +83,17 @@ public class dataPage extends AppCompatActivity {
         ListView list = (ListView)findViewById(R.id.foodListView);
         list.setAdapter(adapter);
     }
-
+    private void registerClickCallback() {
+        ListView list = (ListView)findViewById(R.id.foodListView);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked,int position, long id){
+                Food clickedFood = foodList.get(position);
+                String message = "you clicked position " + position + " which is the food " + clickedFood.getName();
+                Toast.makeText(dataPage.this,message,Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     private class MyListAdapter extends ArrayAdapter<Food>{
         public MyListAdapter(){
             super(dataPage.this,R.layout.item_view,foodList);
@@ -109,6 +124,9 @@ public class dataPage extends AppCompatActivity {
 
             return itemView;
         }
+
+
+
         int getCurrFoodColor(Food currFood){
             int color = 0;
             switch(currFood.getColor()){
