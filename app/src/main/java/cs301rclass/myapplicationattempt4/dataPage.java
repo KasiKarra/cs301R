@@ -1,6 +1,8 @@
 package cs301rclass.myapplicationattempt4;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.ColorSpace;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,8 +11,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class dataPage extends AppCompatActivity {
+
+    private List<Food> foodList = new ArrayList<Food>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +30,8 @@ public class dataPage extends AppCompatActivity {
         setContentView(R.layout.activity_data_page);
         Toolbar tools = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tools);
+        populateFoodList();
+        populateListView();
         }
 
 
@@ -48,4 +62,68 @@ public class dataPage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void populateFoodList() {
+        foodList.add(new Food("Banana",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.FRUIT));
+        foodList.add(new Food("apples",1,Color.RED,R.drawable.bananas,"10-24-2017",FoodCategory.FRUIT));
+        foodList.add(new Food("curry",3,Color.ORANGE,R.drawable.bananas,"10-24-2017",FoodCategory.MEAT));
+        foodList.add(new Food("swedish fish",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.SWEET));
+        foodList.add(new Food("sweetpotatoes",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.FRUIT));
+        foodList.add(new Food("chicken",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.MEAT));
+        foodList.add(new Food("mochi",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.SWEET));
+        foodList.add(new Food("chicken sandwiches",5,Color.GREEN,R.drawable.bananas,"10-24-2017",FoodCategory.MEAT));
+    }
+
+    private void populateListView() {
+        ArrayAdapter<Food> adapter = new dataPage.MyListAdapter();
+        ListView list = (ListView)findViewById(R.id.foodListView);
+        list.setAdapter(adapter);
+    }
+
+    private class MyListAdapter extends ArrayAdapter<Food>{
+        public MyListAdapter(){
+            super(dataPage.this,R.layout.item_view,foodList);
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            //make sure we have a view to work with(may be given null)
+            View itemView = convertView;
+            if(itemView == null){
+                itemView = getLayoutInflater().inflate(R.layout.item_view,parent,false);
+            }
+            //find the food
+            Food currFood = foodList.get(position);
+            //fill the view
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.item_icon);
+            imageView.setImageResource(currFood.getIconId());
+            //name
+            TextView counterText = (TextView) itemView.findViewById(R.id.countdown);
+            counterText.setTextColor(getCurrFoodColor(currFood));
+            counterText.setText(""+currFood.getDaysUntilExp());
+
+            TextView dateText = (TextView) itemView.findViewById(R.id.item_expDate);
+            dateText.setText(currFood.getExpDate());
+
+            TextView nameText = (TextView) itemView.findViewById(R.id.item_txtName);
+            nameText.setText(currFood.getName());
+
+
+            return itemView;
+        }
+        int getCurrFoodColor(Food currFood){
+            int color = 0;
+            switch(currFood.getColor()){
+                case GREEN:
+                    color =  -16711936;
+                    break;
+                case ORANGE:
+                    color = android.graphics.Color.rgb(255,165,0);
+                    break;
+                case RED:
+                    color = -65536;
+                    break;
+
+            }
+            return color;
+        }
+    }
 }

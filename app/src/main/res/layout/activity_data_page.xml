@@ -19,7 +19,24 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        <Button
+            android:id="@+id/addBtn"
+            android:text="Add New Item"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="addItems"/>
+        <ListView
+            android:id="@+id/foodListView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:drawSelectorOnTop="false"
+            />
+    </LinearLayout>
 
-    <include layout="@layout/content_data_page" />
 
 </android.support.design.widget.CoordinatorLayout>

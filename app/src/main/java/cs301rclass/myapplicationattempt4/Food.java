@@ -1,20 +1,27 @@
 package cs301rclass.myapplicationattempt4;
 
+
 /**
  * Created by The Best Couple Ever on 10/18/2017.
  */
+enum Color {GREEN,ORANGE,RED}
+enum FoodCategory{MEAT,VEGGIE,FRUIT,GRAIN,SWEET,DAIRY}
 
 public class Food {
     private String name;
     private int daysUntilExp;
-    private String color;
+    public String expDate;
+    private Color color;
     private int iconId;
+    private FoodCategory category;
 
-    public Food(String name,int daysUntilExp, String color,int iconId){
+    public Food(String name,int daysUntilExp, Color color,int iconId,String expDate,FoodCategory category){
         this.name = name;
         this.daysUntilExp = daysUntilExp;
         this.color = color;
         this.iconId = iconId;
+        this.expDate = expDate;
+        this.category = category;
     }
 
 
@@ -34,11 +41,11 @@ public class Food {
         this.daysUntilExp = daysUntilExp;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
     public int getIconId() {
@@ -48,5 +55,14 @@ public class Food {
     public void setIconId(int iconId) {
         this.iconId = iconId;
     }
+
+    public String getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(String expDate) {
+        this.expDate = expDate;
+    }
+
 
 }
