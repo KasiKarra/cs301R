@@ -17,13 +17,39 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
-    </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_data_page" />
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <Button
+            android:id="@+id/addBtn"
+            android:text="Add New Item"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="addItems"/>
+        <ListView
+            android:id="@+id/foodListView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:drawSelectorOnTop="false"
+            />
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_button"
+        android:src="@mipmap/add_button"
+        app:fabSize="normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        app:layout_anchor="@id/foodListView"
+        app:layout_anchorGravity="bottom|right|end"
+        android:layout_margin="16dp"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -67,7 +67,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         ExtraBtn.setOnClickListener(this);
     }
 
-    public void switchActivities(boolean success)
+    public void switchActivities(boolean success, boolean usedGoogle)
     {
         password.setText("");
 
@@ -77,6 +77,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             username.setText("");
             //move to the dataPage
             Intent intent = new Intent(this, dataPage.class);
+            intent.putExtra("usedGoogle", usedGoogle);
             startActivity(intent);
         }
         else
@@ -95,7 +96,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
          GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-         switchActivities(result.isSuccess());
+         switchActivities(result.isSuccess(), true);
         }
      }
 
@@ -112,6 +113,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
              case R.id.GoogleSignIn:
                  Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                 signInIntent.putExtra("UsedGoogle", "true");
                  startActivityForResult(signInIntent, RC_SIGN_IN);
                  break;
 
@@ -126,13 +128,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
              case R.id.ExtraBtn:
                  if(ExtraBtn.getText().length() == 5) //If it says login
-                    switchActivities(username.getText().toString().equals("admin") && password.getText().toString().equals("admin"));
+                    switchActivities(username.getText().toString().equals("admin") && password.getText().toString().equals("admin"), false);
                  else
                  {
                      if(username.getText().length() != 0 && password.getText().length() != 0) {
                          //add it to the database.
                          resetInvisibleButtons();
-                         switchActivities(true);
+                         switchActivities(true, false);
                      }
                      else
                          note.setText("Please enter in a username AND password");
