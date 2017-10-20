@@ -6,4 +6,18 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="sortingOptions">
+        <item>Alphabetical</item>
+        <item>Categorically</item>
+        <item>Expiration Date</item>
+    </string-array>
+
+    <string-array name="FoodCategoryList">
+        <item>Dairy</item>
+        <item>Fruit</item>
+        <item>Grain</item>
+        <item>Meat</item>
+        <item>Vegetable</item>
+    </string-array>
 </resources>

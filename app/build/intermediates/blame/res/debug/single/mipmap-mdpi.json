@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "C:\\Users\\Rebecca\\AndroidStudioProjects\\MyApplicationAttempt4\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi\\ic_launcher.png",
+        "source": "C:\\Users\\Rebecca\\AndroidStudioProjects\\MyApplicationAttempt4\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Rebecca\\AndroidStudioProjects\\MyApplicationAttempt4\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi\\ic_launcher_round.png",
+        "source": "C:\\Users\\Rebecca\\AndroidStudioProjects\\MyApplicationAttempt4\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Rebecca\\AndroidStudioProjects\\MyApplicationAttempt4\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi\\add_button.png",
+        "source": "C:\\Users\\Rebecca\\AndroidStudioProjects\\MyApplicationAttempt4\\app\\src\\main\\res\\mipmap-mdpi\\add_button.png"
+    }
+]

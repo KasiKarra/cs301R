@@ -24,6 +24,14 @@ public class Food {
         this.category = category;
     }
 
+    public Food(){
+        name = "";
+        daysUntilExp = -1;
+        expDate = "";
+        color = Color.RED;
+        iconId = -1;
+        category = null;
+    }
 
     public String getName() {
         return name;
@@ -64,5 +72,26 @@ public class Food {
         this.expDate = expDate;
     }
 
+    public void setCategory(String type)
+    {
+        if(type.compareTo("Fruit") == 0)
+            category = FoodCategory.FRUIT;
+        if(type.compareTo("Meat") == 0)
+            category = FoodCategory.MEAT;
+        if(type.compareTo("Dairy") == 0)
+            category = FoodCategory.DAIRY;
+        if(type.compareTo("Veggie") == 0)
+            category = FoodCategory.VEGGIE;
+        if(type.compareTo("Sweet") == 0)
+            category = FoodCategory.SWEET;
+        if(type.compareTo("Grain") == 0)
+            category = FoodCategory.GRAIN;
+    }
 
+    public void calculateDaysLeft()
+    {
+        if(expDate.length() < 1)
+            return;
+
+    }
 }

@@ -1,12 +1,13 @@
 package cs301rclass.myapplicationattempt4;
 
-import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,47 +77,29 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
         });
     }
 
-//        popupSelect = (Button) findViewById(R.id.Select);
-//        popupSelect.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mypopup.showAtLocation(customView, 0, 0, 0);
-//            }
-//        });
-
-//        A = (RadioButton) findViewById(R.id.Alphabet);
-//        A.setOnClickListener(this);
-//        C = (RadioButton) findViewById(R.id.Category);
- //       C.setOnClickListener(this);
-//        E = (RadioButton) findViewById(R.id.Expiration);
-//        E.setOnClickListener(this);
-
-
-//        popupSelect = (Button) findViewById(R.id.Select);
-//        popupSelect.setOnClickListener(new View.OnClickListener(){
-//            @ Override
-//            public void onClick(View view){
-
-//                populateFoodList();
-//                mypopup.dismiss();
-//            }
-//        });
-//    }
-
-
     @Override
     public void onClick(View view)
     {
+        A.setChecked(false);
+        C.setChecked(false);
+        E.setChecked(false);
+
         switch(view.getId())
         {
             case R.id.Alphabet:
                 type = sortingType.ALPHABETICAL;
+                A.setChecked(true);
                 break;
             case R.id.Category:
                 type = sortingType.CATEGORICAL;
+                C.setChecked(true);
                 break;
             case R.id.Expiration:
+                E.setChecked(true);
                 type = sortingType.EXPIRATION;
+                break;
+            case R.id.Select:
+                mypopup.dismiss();
                 break;
         }
     }
@@ -126,9 +109,6 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
     {
         Intent intent = new Intent(this, AddItemPage.class);
         startActivity(intent);
-//        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-//        customView = inflater.inflate(R.layout.fragment_sortingtypes,null);
-//        mypopup = new PopupWindow(ActionBar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT);
     }
 
     @Override
@@ -165,6 +145,8 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
             }
             finish();
         }
+        if(id == R.id.Sort)
+            ShowPopupWindow();
 
         return super.onOptionsItemSelected(item);
     }
@@ -245,5 +227,33 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
             }
             return color;
         }
+    }
+
+    //create the sorting popup window
+    private void ShowPopupWindow(){
+        try {
+            ImageView btncall, btnsound, btncamera, btnvideo,btngallary,btnwrite;
+            LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.fragment_sortingtypes, null);
+            mypopup = new PopupWindow(layout, 750, 500, true);
+
+            //mypopup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mypopup.setBackgroundDrawable(new ColorDrawable(getResources().getColor((R.color.colorAccent))));
+            mypopup.setOutsideTouchable(false);
+            mypopup.showAtLocation(layout, Gravity.CENTER, 40, 60);
+            //  window.showAtLocation(layout, 17, 100, 100);
+
+            A = (RadioButton) layout.findViewById(R.id.Alphabet);
+            C = (RadioButton) layout.findViewById(R.id.Category);
+            E = (RadioButton) layout.findViewById(R.id.Expiration);
+
+            A.setOnClickListener(this);
+            C.setOnClickListener(this);
+            E.setOnClickListener(this);
+
+            popupSelect = (Button) layout.findViewById(R.id.Select);
+            popupSelect.setOnClickListener(this);
+
+        }catch (Exception e){}
     }
 }
