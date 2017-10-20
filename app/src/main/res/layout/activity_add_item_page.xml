@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cs301rclass.myapplicationattempt4.AddItemPage"
     tools:layout_editor_absoluteY="81dp"
-    tools:layout_editor_absoluteX="0dp">
+    tools:layout_editor_absoluteX="0dp"
+    android:theme="@style/AppThemeAddItem"
+
+    >
 
     <!-- This extra linear layout is here so that nothing is auto focused
     when the app opens up-->
@@ -15,117 +19,101 @@
         android:layout_height="0dp"
         android:focusable = "true"
         android:focusableInTouchMode="true"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintRight_toLeftOf="parent"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Title"
-        android:layout_width="0dp"
-        android:layout_height="68dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="27dp"
+        android:fontFamily="casual"
         android:text="Add an Item to your Pantry"
         android:textColor="@color/Black"
         android:textSize="22dp"
-        android:fontFamily="casual"
-        android:layout_marginStart="34dp"
-        tools:layout_editor_absoluteY="16dp"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintBottom_toTopOf="@+id/ItemName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <EditText
         android:id="@+id/ItemName"
-        android:layout_width="0dp"
-        android:layout_height="78dp"
-        android:layout_marginEnd="14dp"
+        android:layout_width="200dp"
+        android:layout_height="0dp"
         android:ems="10"
         android:hint="Product Name"
         android:inputType="text|textShortMessage"
-        tools:layout_editor_absoluteX="85dp"
-        tools:layout_editor_absoluteY="84dp" />
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="105dp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/Date"
         android:layout_width="0dp"
-        android:layout_height="93dp"
-        android:layout_marginEnd="49dp"
-        android:layout_marginStart="48dp"
+        android:layout_height="78dp"
         android:ems="10"
         android:hint='Date "DD-MM-YYYY"'
         android:inputType="date"
-        tools:layout_editor_absoluteX="85dp"
-        tools:layout_editor_absoluteY="162dp" />
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/ItemName"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/ItemName"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/ItemName" />
 
     <Button
         android:id="@+id/SubmitButton"
         android:layout_width="150dp"
         android:layout_height="68dp"
-        android:layout_marginEnd="27dp"
         android:text="Add ITem To Pantry"
-        tools:layout_editor_absoluteY="418dp"
-        tools:layout_editor_absoluteX="209dp" />
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="25dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="25dp" />
 
     <Button
         android:id="@+id/Cancel"
         android:layout_width="150dp"
-        android:layout_height="68dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="27dp"
+        android:layout_height="0dp"
         android:text="Cancel"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="418dp" />
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        android:layout_marginStart="26dp"
+        app:layout_constraintBottom_toBottomOf="@+id/SubmitButton"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/SubmitButton"
+        android:layout_marginLeft="26dp" />
 
-    <RadioButton
-        android:id="@+id/Dairy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:layout_editor_absoluteX="336dp"
-        tools:layout_editor_absoluteY="348dp" />
-
-    <RadioButton
-        android:id="@+id/Grain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="348dp" />
-
-    <RadioButton
-        android:id="@+id/Veggie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:layout_editor_absoluteX="77dp"
-        tools:layout_editor_absoluteY="348dp" />
-
-    <RadioButton
-        android:id="@+id/Fruit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:layout_editor_absoluteX="262dp"
-        tools:layout_editor_absoluteY="348dp" />
-
-    <RadioButton
-        android:id="@+id/Sweet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:layout_editor_absoluteX="144dp"
-        tools:layout_editor_absoluteY="348dp" />
-
-    <RadioButton
-        android:id="@+id/Other"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:layout_editor_absoluteX="209dp"
-        tools:layout_editor_absoluteY="348dp" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="385dp"
-        android:layout_height="99dp"
-        app:srcCompat="@drawable/categories"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="255dp" />
+    <Spinner
+        android:id="@+id/dropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="78dp"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/Date"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/Date"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/Date" />
 
 </android.support.constraint.ConstraintLayout>

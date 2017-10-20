@@ -1,46 +1,78 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/framing_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="cs301rclass.myapplicationattempt4.dataPage"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
 
     <TextView
         android:id="@+id/Instructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose How to Sort Your Pantry" />
+        android:text="Choose How to Sort Your Pantry"
+        tools:layout_constraintTop_creator="1"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="4dp" />
 
-    <RadioGroup
+
+    <RadioButton
+        android:id="@+id/Alphabet"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:text="Alphabet"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_conversion_absoluteX="0dp"
+        tools:layout_conversion_absoluteHeight = "32dp"
+        app:layout_constraintTop_toBottomOf="@+id/Instructions"
+        tools:layout_constraintLeft_creator="1"
+        android:buttonTint="@color/colorPrimaryDark"
+        />
 
-        <RadioButton
-            android:id="@+id/Alphabet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Alphabet" />
+    <RadioButton
+        android:id="@+id/Category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        tools:layout_conversion_absoluteX="0dp"
+        tools:layout_conversion_absoluteWidth="88dp"
+        tools:layout_conversion_absoluteHeight="32dp"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintTop_toBottomOf="@+id/Alphabet"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:buttonTint="@color/colorPrimaryDark"/>
 
-        <RadioButton
-            android:id="@+id/Category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Category" />
-
-        <RadioButton
-            android:id="@+id/Expiration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Expiration Date" />
-
-    </RadioGroup>
+    <RadioButton
+        android:id="@+id/Expiration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Expiration Date"
+        tools:layout_conversion_absoluteX="0dp"
+        tools:layout_conversion_absoluteWidth="126dp"
+        tools:layout_conversion_absoluteHeight="32dp"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintTop_toBottomOf="@+id/Category"
+        android:buttonTint="@color/colorPrimaryDark"/>
 
     <Button
         android:id="@+id/Select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select" />
+        android:text="Select"
+        tools:layout_conversion_absoluteX="0dp"
+        tools:layout_conversion_absoluteY="96dp"
+        tools:layout_conversion_absoluteWidth="88dp"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toBottomOf="@+id/Expiration"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/Expiration" />
 
-</FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

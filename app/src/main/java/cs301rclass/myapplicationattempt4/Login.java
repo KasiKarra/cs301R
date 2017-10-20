@@ -76,6 +76,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             note.setText("");
             username.setText("");
             //move to the dataPage
+            resetInvisibleButtons();
             Intent intent = new Intent(this, dataPage.class);
             intent.putExtra("usedGoogle", usedGoogle);
             startActivity(intent);

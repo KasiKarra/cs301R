@@ -25,7 +25,10 @@
             android:label="My Virtual Pantry"
             android:theme="@style/AppTheme.WithMenuBar" />
 
-        <activity android:name=".AddItemPage"></activity>
+        <activity android:name=".AddItemPage"
+            android:label=""
+            android:theme = "@style/AppThemeAddItem"
+            />
     </application>
 
 </manifest>
