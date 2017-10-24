@@ -1,18 +1,28 @@
 package cs301rclass.myapplicationattempt4;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+//import com.google.firebase.auth.AuthResult;
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener
 {
@@ -22,19 +32,21 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     EditText username;
     EditText password;
     TextView note;
-    GoogleApiClient mGoogleApiClient;
     Button GoogleLoginBtn;
     Button RegisterBtn;
     int count = 0;
     int clicked = -1;
     Button ExtraBtn;
     Button Cancel;
+  //  FirebaseAuth fba;
+  //  FirebaseUser user = null;
+  //  FirebaseAuth.AuthStateListener fbalistener;
 
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+       // fba = FirebaseAuth.getInstance();
 
         loginBtn = (Button) findViewById(R.id.login);
         loginBtn.setOnClickListener(this);
@@ -47,19 +59,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         note =  (TextView) findViewById(R.id.note);
 
-    // Configure sign-in to request the user's ID, email address, and basic
-    // profile. ID and basic profile are included in DEFAULT_SIGN_IN
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail().build();
-    // Build a GoogleApiClient with access to the Google Sign-In API and the
-    // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
         GoogleLoginBtn = (Button) findViewById(R.id.GoogleSignIn);
-        GoogleLoginBtn.setOnClickListener(this);
 
         Cancel = (Button) findViewById(R.id.Cancel);
         Cancel.setOnClickListener(this);
@@ -78,7 +78,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             //move to the dataPage
             resetInvisibleButtons();
             Intent intent = new Intent(this, dataPage.class);
-            intent.putExtra("usedGoogle", usedGoogle);
             startActivity(intent);
         }
         else
@@ -91,16 +90,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         note.setText("Please check your internet connection and try again.");
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-         GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-         switchActivities(result.isSuccess(), true);
-        }
-     }
-
      public void onClick(View v)
      {
          //clear error text
@@ -110,12 +99,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
              case R.id.login:
                  ExtraBtn.setText("Login");
                 setUpInvisibleButtons();
-                 break;
-
-             case R.id.GoogleSignIn:
-                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                 signInIntent.putExtra("UsedGoogle", "true");
-                 startActivityForResult(signInIntent, RC_SIGN_IN);
                  break;
 
              case R.id.Registration:
@@ -129,13 +112,34 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
              case R.id.ExtraBtn:
                  if(ExtraBtn.getText().length() == 5) //If it says login
-                    switchActivities(username.getText().toString().equals("admin") && password.getText().toString().equals("admin"), false);
+                 {
+                     switchActivities(true,false);
+/*
+                     fba.signInWithEmailAndPassword(username.getText().toString(), password.getText().toString())
+                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                 @Override
+                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                     if (task.isSuccessful()) {
+                                         // Sign in success, update UI with the signed-in user's information
+                                         user = fba.getCurrentUser();
+                                     } else {
+                                         // If sign in fails, display a message to the user.
+                                         note.setText("Username or Password was incorrect");
+                                     }
+                                 }
+                             });
+*/
+                 }
                  else
                  {
                      if(username.getText().length() != 0 && password.getText().length() != 0) {
                          //add it to the database.
-                         resetInvisibleButtons();
-                         switchActivities(true, false);
+                        createAccount(username.getText().toString(), password.getText().toString());
+                         if(note.getText().length() == 0) //if there was no error with user registration, log in
+                         {
+                             resetInvisibleButtons();
+                             switchActivities(true, false);
+                         }
                      }
                      else
                          note.setText("Please enter in a username AND password");
@@ -143,7 +147,26 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
          }
      }
 
-     public void setUpInvisibleButtons()
+    private void createAccount(String email, String password) {
+        // [START create_user_with_email]
+/*
+        fba.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            user = fba.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            note.setText("Registration Failed");
+                        }
+                    }
+                });
+*/
+    }
+
+
+    public void setUpInvisibleButtons()
      {
          //turn on login information or create account information
          ExtraBtn.setVisibility(View.VISIBLE);
@@ -172,6 +195,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
          loginBtn.setVisibility(View.VISIBLE);
          GoogleLoginBtn.setVisibility(View.VISIBLE);
          RegisterBtn.setVisibility(View.VISIBLE);
+
+         InputMethodManager inputManager = (InputMethodManager)
+                 getSystemService(Context.INPUT_METHOD_SERVICE);
+
+         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                 InputMethodManager.HIDE_NOT_ALWAYS);
+
      }
 
 }

@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +30,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +47,8 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
     private Button popupSelect;
     private RadioButton A, C, E;  //alphabetical, categorical, expiration
     private PopupWindow mypopup;
-    private View customView;
     private sortingType type = sortingType.ALPHABETICAL;
+//    private FirebaseAuth fba;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,25 +60,17 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
         populateListView();
         registerClickCallback();
 
-//        googleSignIn = getIntent().getBooleanExtra("usedGoogle", false);
-
-        if (googleSignIn) {
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build();
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build();
-            mGoogleApiClient.connect();
-            super.onStart();
-        }
-
         fab = (FloatingActionButton) findViewById(R.id.add_button);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 addItemSwitch();
             }
         });
+
+  //      fba = FirebaseAuth.getInstance();
+  //      FirebaseUser user = fba.getCurrentUser();
+        //UID = user.getUid();
+
     }
 
     @Override
@@ -131,22 +127,21 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
         //}
         if(id == R.id.Logoff)
         {
-            if(mGoogleApiClient != null) {
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(Status status) {
-                                // ...
-                                //Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
-                                //Intent i=new Intent(getApplicationContext(),Login.class);
-                                //startActivity(i);
-                            }
-                        });
-            }
+            //fba.signOut();
             finish();
         }
         if(id == R.id.Sort)
             ShowPopupWindow();
+        if(id == R.id.RecipeIdeas)
+        {
+            Intent intent = new Intent(this, RecipeViewer.class);
+            startActivity(intent);
+        }
+        if(id == R.id.FoodTrivia)
+        {
+            Intent intent = new Intent(this, FoodTrivia.class);
+            startActivity(intent);
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -164,11 +159,11 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
 
     private void populateListView() {
         ArrayAdapter<Food> adapter = new dataPage.MyListAdapter();
-        ListView list = (ListView)findViewById(R.id.foodListView);
+        ListView list = (ListView)findViewById(R.id.RecipeList);
         list.setAdapter(adapter);
     }
     private void registerClickCallback() {
-        ListView list = (ListView)findViewById(R.id.foodListView);
+        ListView list = (ListView)findViewById(R.id.RecipeList);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked,int position, long id){

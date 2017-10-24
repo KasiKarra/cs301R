@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cs301rclass.myapplicationattempt4.Login">
+    <item
+        android:id = "@+id/Return"
+        android:checkable="false"
+        android:title="My Virtual Pantry"
+        android:orderInCategory="100"
+        />
+</menu>

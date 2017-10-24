@@ -39,7 +39,8 @@
         app:layout_constraintLeft_toLeftOf="@+id/GoogleSignIn"
         app:layout_constraintTop_toBottomOf="@+id/email"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        android:imeOptions="actionDone"/>
 
     <EditText
         android:id="@+id/email"
@@ -55,7 +56,8 @@
         app:layout_constraintTop_toBottomOf="@+id/Title"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        android:imeOptions="actionDone"/>
 
     <TextView
         android:id="@+id/note"

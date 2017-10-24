@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:onClick="addItems"/>
         <ListView
-            android:id="@+id/foodListView"
+            android:id="@+id/RecipeList"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:drawSelectorOnTop="false"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        app:layout_anchor="@id/foodListView"
+        app:layout_anchor="@id/RecipeList"
         app:layout_anchorGravity="bottom|right|end"
         android:layout_margin="16dp"/>
 

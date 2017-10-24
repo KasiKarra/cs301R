@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cs301rclass.myapplicationattempt4">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,11 +25,22 @@
             android:name=".dataPage"
             android:label="My Virtual Pantry"
             android:theme="@style/AppTheme.WithMenuBar" />
-
-        <activity android:name=".AddItemPage"
+        <activity
+            android:name=".AddItemPage"
             android:label=""
-            android:theme = "@style/AppThemeAddItem"
-            />
+            android:theme="@style/AppThemeAddItem" />
+        <activity
+            android:name=".RecipeViewer"
+            android:label="@string/title_activity_recipe_viewer"
+            android:theme="@style/AppTheme.WithMenuBar" />
+        <activity
+            android:name=".Settings"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".FoodTrivia"
+            android:label="Food Trivia"
+            android:theme="@style/AppTheme.WithMenuBar"/>
     </application>
 
 </manifest>
