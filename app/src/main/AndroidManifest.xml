@@ -22,6 +22,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".SignupActivity"
+            android:label="signup"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:label="resetPassword"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".dataPage"
             android:label="My Virtual Pantry"
             android:theme="@style/AppTheme.WithMenuBar" />

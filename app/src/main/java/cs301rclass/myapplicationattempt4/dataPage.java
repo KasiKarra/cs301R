@@ -30,6 +30,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 //import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.FirebaseUser;
 
@@ -48,6 +50,7 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
     private RadioButton A, C, E;  //alphabetical, categorical, expiration
     private PopupWindow mypopup;
     private sortingType type = sortingType.ALPHABETICAL;
+    private FirebaseAuth auth;
 //    private FirebaseAuth fba;
 
     @Override
@@ -59,7 +62,7 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
         populateFoodList();
         populateListView();
         registerClickCallback();
-
+        auth = FirebaseAuth.getInstance();
         fab = (FloatingActionButton) findViewById(R.id.add_button);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -127,8 +130,9 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
         //}
         if(id == R.id.Logoff)
         {
-            //fba.signOut();
-            finish();
+            auth.signOut();
+            Intent intent = new Intent(this,Login.class);
+            startActivity(intent);
         }
         if(id == R.id.Sort)
             ShowPopupWindow();
@@ -224,6 +228,20 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+
+    // this listener will be called when there is change in firebase user session
+    FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+        @Override
+        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user == null) {
+                // user auth state is changed - user is null
+                // launch login activity
+                startActivity(new Intent(dataPage.this, Login.class));
+                finish();
+            }
+        }
+    };
     //create the sorting popup window
     private void ShowPopupWindow(){
         try {
