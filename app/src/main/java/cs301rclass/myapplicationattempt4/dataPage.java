@@ -32,6 +32,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 //import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.FirebaseUser;
 
@@ -51,7 +53,9 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
     private PopupWindow mypopup;
     private sortingType type = sortingType.ALPHABETICAL;
     private FirebaseAuth auth;
-//    private FirebaseAuth fba;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference("server/saving-data/fireblog");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

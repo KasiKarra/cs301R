@@ -64,18 +64,22 @@
 
     <EditText
         android:id="@+id/Date"
+        style="@style/Widget.AppCompat.EditText"
         android:layout_width="0dp"
         android:layout_height="78dp"
-        android:ems="10"
-        android:hint='Date "DD-MM-YYYY"'
-        android:inputType="date"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="@+id/ItemName"
         android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Exp. Date"
+        android:onClick="setDate"
+
+        android:selectAllOnFocus="true"
+        android:textIsSelectable="false"
+        app:layout_constraintLeft_toLeftOf="@+id/ItemName"
+        app:layout_constraintRight_toRightOf="@+id/ItemName"
         app:layout_constraintTop_toBottomOf="@+id/ItemName"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/ItemName" />
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <Button
         android:id="@+id/SubmitButton"
