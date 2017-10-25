@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="cs301rclass.myapplicationattempt4.dataPage">
 
     <android.support.design.widget.AppBarLayout
@@ -18,39 +19,74 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-
-        <Button
-            android:id="@+id/addBtn"
-            android:text="Add New Item"
-            android:layout_width="fill_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="addItems"/>
-        <ListView
-            android:id="@+id/RecipeList"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:drawSelectorOnTop="false"
+            android:text="Sorted Alphabetically"
+            android:textColor="@color/Black"
             />
 
-    </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_button"
-        android:src="@mipmap/add_button"
-        app:fabSize="normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        app:layout_anchor="@id/RecipeList"
-        app:layout_anchorGravity="bottom|right|end"
-        android:layout_margin="16dp"/>
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ListView
+                android:id="@+id/RecipeList"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:drawSelectorOnTop="false" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimaryDark"
+        android:orientation = "horizontal">
+
+        <Button
+            android:id = "@+id/RecipeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text = "Recipe Viewer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop = "5dp"
+            />
+
+        <ImageButton
+            android:id = "@+id/sort"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:drawable = "@drawable/sorting"
+            android:layout_gravity="right"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop = "5dp"/> <!-- 10dp margin on either side of plus btn and plus btn width -->
+
+        <ImageButton
+            android:id="@+id/AddItemButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:drawable="@mipmap/add_button"
+            android:layout_marginTop = "5dp" />
+
+    </android.support.design.widget.BottomNavigationView>
+
+</LinearLayout>
 
 
-</android.support.design.widget.CoordinatorLayout>
+

@@ -8,23 +8,10 @@
         android:title="@string/action_settings"
         app:showAsAction="never" /-->
     <item
-        android:id = "@+id/FoodTrivia"
-        android:checkable="false"
-        android:title="Food Trivia"
-        android:orderInCategory="90"
-        />
-    <item
         android:id = "@+id/RecipeIdeas"
         android:checkable="false"
         android:title="Recipe Ideas"
         android:orderInCategory="100"
-        />
-
-    <item
-        android:id = "@+id/Sort"
-        android:checkable="false"
-        android:title="Sort"
-        android:orderInCategory="110"
         />
     <item
         android:id="@+id/Logoff"
