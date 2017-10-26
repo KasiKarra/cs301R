@@ -4,9 +4,12 @@
 
 package cs301rclass.myapplicationattempt4;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.text.SimpleDateFormat;
+import android.net.ParseException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -41,9 +44,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 enum sortingType {ALPHABETICAL, CATEGORICAL, EXPIRATION}
 
@@ -62,6 +68,7 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
     private Food selectedFood;
     private TextView sortingTypeTextBox;
     private Button RecipeButton;
+    private Calendar calendar;
     private ImageButton Sort, AddItem;
     private FirebaseUser user;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -85,12 +92,23 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
         adapter = new dataPage.MyListAdapter();
         list = (ListView) findViewById(R.id.RecipeList);
         list.setAdapter(adapter);
+        calendar = Calendar.getInstance();
         populateFoodList();
+        String createdDate = calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR);
+        updateDays(createdDate);
         registerClickCallback();
 
     }
 
-
+    private void updateDays(String createdDate)
+    {
+        for(Food food: foodList)
+        {
+            String expDate = food.getExpDate().toString();
+            int days = getCountOfDays(createdDate,expDate);
+            food.setDaysUntilExp(days);
+        }
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -360,6 +378,7 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
         }
 
 
+
         int getCurrFoodColor(Food currFood) {
             int color = 0;
             switch (currFood.getColor()) {
@@ -377,7 +396,69 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
             return color;
         }
     }
+    @SuppressLint("NewApi")
+    public int getCountOfDays(String createdDateString, String expireDateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 
+        Date createdConvertedDate = null, expireCovertedDate = null, todayWithZeroTime = null;
+        try {
+            createdConvertedDate = dateFormat.parse(createdDateString);
+            expireCovertedDate = dateFormat.parse(expireDateString);
+
+            Date today = new Date();
+
+            todayWithZeroTime = dateFormat.parse(dateFormat.format(today));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+        int cYear = 0, cMonth = 0, cDay = 0;
+
+        if (createdConvertedDate.after(todayWithZeroTime)) {
+            Calendar cCal = Calendar.getInstance();
+            cCal.setTime(createdConvertedDate);
+            cYear = cCal.get(Calendar.YEAR);
+            cMonth = cCal.get(Calendar.MONTH);
+            cDay = cCal.get(Calendar.DAY_OF_MONTH);
+
+        } else {
+            Calendar cCal = Calendar.getInstance();
+            cCal.setTime(todayWithZeroTime);
+            cYear = cCal.get(Calendar.YEAR);
+            cMonth = cCal.get(Calendar.MONTH);
+            cDay = cCal.get(Calendar.DAY_OF_MONTH);
+        }
+
+
+    /*Calendar todayCal = Calendar.getInstance();
+    int todayYear = todayCal.get(Calendar.YEAR);
+    int today = todayCal.get(Calendar.MONTH);
+    int todayDay = todayCal.get(Calendar.DAY_OF_MONTH);
+    */
+
+        Calendar eCal = Calendar.getInstance();
+        eCal.setTime(expireCovertedDate);
+
+        int eYear = eCal.get(Calendar.YEAR);
+        int eMonth = eCal.get(Calendar.MONTH);
+        int eDay = eCal.get(Calendar.DAY_OF_MONTH);
+
+        Calendar date1 = Calendar.getInstance();
+        Calendar date2 = Calendar.getInstance();
+
+        date1.clear();
+        date1.set(cYear, cMonth, cDay);
+        date2.clear();
+        date2.set(eYear, eMonth, eDay);
+
+        long diff = date2.getTimeInMillis() - date1.getTimeInMillis();
+
+        float dayCount = (float) diff / (24 * 60 * 60 * 1000);
+
+        return (int) dayCount + 1;
+    }
 	    // this listener will be called when there is change in firebase user session
     FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
         @Override
