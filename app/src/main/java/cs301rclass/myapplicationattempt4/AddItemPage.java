@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.net.ParseException;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -25,6 +27,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -46,7 +50,8 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
     private int year,month,day;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref = database.getReference("server/saving-data/fireblog");
-
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,23 +69,27 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
         showDate(year,month+1,day);
 
 
+
         addItem = (Button)findViewById(R.id.SubmitButton);
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(SanityCheck(Name.getText().toString(), dateView.getText().toString()))
                 {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     //add item to firebase then finish activity to return to data page
                     String createdDate = calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR);
                     String expDate = dateView.getText().toString();
                     int days = getCountOfDays(createdDate,expDate);
+
                     String foodType = dropdown.getSelectedItem().toString();
                     Food newFood = new Food(Name.getText().toString(),days,getColorType(days),getIcon(foodType),dateView.getText().toString(),getFoodType(foodType));
 
                     //add to firebase
-                    DatabaseReference foodsRef = ref.child("foods");
-                    DatabaseReference newFoodRef = foodsRef.push();
-                    newFoodRef.push().setValue(newFood);
+
+                    DatabaseReference foodsRef = ref.child(user.getUid());
+                    foodsRef.push().setValue(newFood);
+
                     finish();
                 }
                 else
@@ -298,6 +307,6 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
 
         float dayCount = (float) diff / (24 * 60 * 60 * 1000);
 
-        return (int) dayCount;
+        return (int) dayCount + 1;
     }
 }

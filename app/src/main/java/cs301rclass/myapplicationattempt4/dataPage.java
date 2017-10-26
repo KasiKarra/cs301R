@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -33,6 +34,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,15 +50,21 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
     private List<Food> foodList = new ArrayList<Food>();
     private Button popupSelect;
     private RadioButton A, C, E;  //alphabetical, categorical, expiration
+    private Button Delete,Cancel;
+    private PopupWindow deletePopUp;
     private PopupWindow mypopup;
     private sortingType type = sortingType.ALPHABETICAL;
     private FirebaseAuth auth;
     private static GestureDetector gd;
     private ListView list;
     ArrayAdapter<Food> adapter;
+    private Food selectedFood;
     private TextView sortingTypeTextBox;
     private Button RecipeViewer;
     private ImageButton Sort, AddItem;
+    private FirebaseUser user;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference("server/saving-data/fireblog/");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +73,7 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
         Toolbar tools = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tools);
         auth = FirebaseAuth.getInstance();
-
+        user = FirebaseAuth.getInstance().getCurrentUser();
         RecipeViewer = (Button) findViewById (R.id.RecipeButton);
         RecipeViewer.setOnClickListener(this);
         Sort = (ImageButton) findViewById(R.id.sort);
@@ -126,6 +138,12 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
                 Intent intent = new Intent(this, AddItemPage.class);
                 startActivity(intent);
                 break;
+            case R.id.Cancel:
+                mypopup.dismiss();
+                break;
+            case R.id.Delete:
+                delete(selectedFood);
+                mypopup.dismiss();
         }
     }
 
@@ -149,7 +167,8 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
         //}
         if (id == R.id.Logoff) {
             auth.signOut();
-            finish();  //can we use finish instead of start new activity?
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent); //can we use finish instead of start new activity?
         }
         if(id == R.id.RecipeIdeas)
         {
@@ -160,30 +179,50 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void populateFoodList() {
-        foodList.add(new Food("Banana", 5, Color.GREEN, R.drawable.fruit, "10-24-2017", FoodCategory.FRUIT));
-        foodList.add(new Food("apples", 1, Color.RED, R.drawable.fruit, "10-24-2017", FoodCategory.FRUIT));
-        foodList.add(new Food("curry", 3, Color.ORANGE, R.drawable.meat, "10-24-2017", FoodCategory.MEAT));
-        foodList.add(new Food("swedish fish", 5, Color.GREEN, R.drawable.sweet, "10-24-2017", FoodCategory.SWEET));
-        foodList.add(new Food("sweetpotatoes", 5, Color.GREEN, R.drawable.veggie, "10-24-2017", FoodCategory.FRUIT));
-        foodList.add(new Food("chicken", 5, Color.GREEN, R.drawable.meat, "10-24-2017", FoodCategory.MEAT));
-        foodList.add(new Food("mochi", 5, Color.GREEN, R.drawable.sweet, "10-24-2017", FoodCategory.SWEET));
-        foodList.add(new Food("chicken sandwiches", 5, Color.GREEN, R.drawable.meat, "10-24-2017", FoodCategory.MEAT));
-        foodList.add(new Food("chicken sandwiches", 5, Color.GREEN, R.drawable.meat, "10-24-2017", FoodCategory.MEAT));
-        foodList.add(new Food("chicken sandwiches", 5, Color.GREEN, R.drawable.meat, "10-24-2017", FoodCategory.MEAT));
-        foodList.add(new Food("chicken sandwiches", 5, Color.GREEN, R.drawable.meat, "10-24-2017", FoodCategory.MEAT));
-        foodList.add(new Food("chicken sandwiches", 5, Color.GREEN, R.drawable.meat, "10-24-2017", FoodCategory.MEAT));
-        foodList.add(new Food("chicken sandwiches", 5, Color.GREEN, R.drawable.meat, "10-24-2017", FoodCategory.MEAT));
-        foodList.add(new Food("chicken sandwiches", 5, Color.GREEN, R.drawable.meat, "10-24-2017", FoodCategory.MEAT));
-    }
 
+
+        ref.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                foodList.clear();
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    Food newFood = postSnapshot.getValue(Food.class);
+                    newFood.setFirebaseid(postSnapshot.getKey());
+                    foodList.add(newFood);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+    }
+    private void delete(Food foodToDelete)
+    {
+        foodList.remove(foodToDelete);
+        ref.child(user.getUid()).child(foodToDelete.getFirebaseid()).removeValue();
+        adapter.notifyDataSetChanged();
+    }
     private void registerClickCallback() {
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                selectedFood = foodList.get(position);
+                ShowDeletePopupWindow();
+                return true;
+            }
+            /*
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 Food clickedFood = foodList.get(position);
                 String message = "you clicked position " + position + " which is the food " + clickedFood.getName();
                 Toast.makeText(dataPage.this, message, Toast.LENGTH_LONG).show();
             }
+            */
         });
     }
 
@@ -288,7 +327,30 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
+    //create the delete popup window
+    private void ShowDeletePopupWindow() {
+        try {
+            ImageView btncall, btnsound, btncamera, btnvideo, btngallary, btnwrite;
+            LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.content_delete_popup, null);
+            mypopup = new PopupWindow(layout, 750, 500, true);
 
+
+            mypopup.setBackgroundDrawable(new ColorDrawable(getResources().getColor((R.color.colorAccent))));
+            mypopup.setOutsideTouchable(false);
+            mypopup.showAtLocation(layout, Gravity.CENTER, 40, 60);
+
+            Delete = (Button) layout.findViewById(R.id.Delete);
+            Cancel = (Button) layout.findViewById(R.id.Cancel);
+
+
+            Delete.setOnClickListener(this);
+            Cancel.setOnClickListener(this);
+
+
+        } catch (Exception e) {
+        }
+    }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         return gd.onTouchEvent(event);

@@ -10,6 +10,7 @@ enum FoodCategory{MEAT,VEGGIE,FRUIT,GRAIN,SWEET,DAIRY}
 public class Food {
     private String name;
     private int daysUntilExp;
+    private String firebaseid;
     public String expDate;
     private Color color;
     private int iconId;
@@ -22,6 +23,7 @@ public class Food {
         this.iconId = iconId;
         this.expDate = expDate;
         this.category = category;
+        this.firebaseid = "";
     }
 
     public Food(){
@@ -31,6 +33,7 @@ public class Food {
         color = Color.RED;
         iconId = -1;
         category = null;
+        firebaseid = "";
     }
 
     public String getName() {
@@ -93,5 +96,12 @@ public class Food {
         if(expDate.length() < 1)
             return;
 
+    }
+    public String getFirebaseid() {
+        return firebaseid;
+    }
+
+    public void setFirebaseid(String firebaseid) {
+        this.firebaseid = firebaseid;
     }
 }
