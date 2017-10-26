@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -46,6 +47,10 @@ public class RecipeViewer extends AppCompatActivity {
     EditText Ingredients;
     private List<Recipe> recipeResponses = new ArrayList<Recipe>();
     Button Submit;
+    Configuration config;
+    APIController api;
+    ListView list;
+    ArrayAdapter<Recipe> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +59,20 @@ public class RecipeViewer extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        config = new Configuration();
+        config.initialize(this.getApplicationContext());
+        api = APIController.getInstance();
+
         Ingredients = (EditText) findViewById(R.id.Ingredients);
         Submit = (Button) findViewById(R.id.Submit);
         Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (Ingredients.getText().toString().length() > 0)
-                    SpoonacularAPIAttempt();
+                {
+                    //SpoonacularAPIAttempt();
+                    recipeResponses.add(new Recipe(100, "Apple Fritters", "https://spoonacular.com/recipeImages/Apple-fritters-556470.jpg"));
+                }
                 else {
                     recipeResponses.clear();
                     recipeResponses.add(new Recipe(-1, "Please enter in your ingredients list!!", ""));
@@ -76,6 +88,9 @@ public class RecipeViewer extends AppCompatActivity {
         });
 
 
+        adapter = new RecipeViewer.MyListAdapter();
+        list = (ListView) findViewById(R.id.RecipeList);
+        list.setAdapter(adapter);
     }
 
 
@@ -93,10 +108,6 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
     //using the spoonacular example given online
     public void SpoonacularAPIAttempt() {
         recipeResponses.clear();
-        Configuration config = new Configuration();
-        config.initialize(this.getApplicationContext());
-        APIController api = APIController.getInstance();
-
         //   final String ingredients, final Boolean limitLicense,  final Integer number,  final Integer ranking,  Map<String, Object> queryParameters,
         //   final APICallBack<List<FindByIngredientsModel>> callBack
 
@@ -135,9 +146,7 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
     }
 
     private void populateListView() {
-        ArrayAdapter<Recipe> adapter = new RecipeViewer.MyListAdapter();
-        ListView list = (ListView) findViewById(R.id.RecipeList);
-        list.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     private void registerClickCallback() {
@@ -174,12 +183,15 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
                 //fill the view
                 ImageView imageView = (ImageView) itemView.findViewById(R.id.item_icon);
                 try {
-                    Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(current.getImage()).getContent());
-                    imageView.setImageBitmap(bitmap);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    URL url = new URL(current.getImage());
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream input = connection.getInputStream();
+                    Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                    imageView.setImageBitmap(myBitmap);
+                } catch (Exception e) {
+                    //create bit image that has x over
                 }
             }
 
