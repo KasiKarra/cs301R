@@ -19,12 +19,13 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
+
         <TextView
+            android:id="@+id/sortedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sorted Alphabetically"
-            android:textColor="@color/Black"
-            />
+            android:textColor="@color/Black" />
 
     </android.support.design.widget.AppBarLayout>
 

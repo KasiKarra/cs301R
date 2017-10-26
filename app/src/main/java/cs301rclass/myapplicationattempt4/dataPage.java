@@ -41,6 +41,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 enum sortingType {ALPHABETICAL, CATEGORICAL, EXPIRATION}
@@ -80,7 +82,7 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
         Sort.setOnClickListener(this);
         AddItem = (ImageButton) findViewById(R.id.AddItemButton);
         AddItem.setOnClickListener(this);
-
+        sortingTypeTextBox = (TextView) findViewById(R.id.sortedText);
         adapter = new dataPage.MyListAdapter();
         list = (ListView) findViewById(R.id.RecipeList);
         list.setAdapter(adapter);
@@ -118,15 +120,22 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
                 break;
             case R.id.Select:
                 mypopup.dismiss();
-
                 //change sorted text to reflect what is chosen
-                if(type == sortingType.ALPHABETICAL)
+                if(type == sortingType.ALPHABETICAL) {
                     sortingTypeTextBox.setText("Sorted Alphabetically");
-                else if(type == sortingType.CATEGORICAL)
+                    sortAlphabetical();
+                    adapter.notifyDataSetChanged();
+                }
+                else if(type == sortingType.CATEGORICAL) {
                     sortingTypeTextBox.setText("Sorted Categorically");
-                else
+                    sortCategory();
+                    adapter.notifyDataSetChanged();
+                }
+                else {
                     sortingTypeTextBox.setText("Sorted by Expiration Date");
-
+                    sortDate();
+                    adapter.notifyDataSetChanged();
+                }
                 break;
             case R.id.sort:
                 ShowPopupWindow();
@@ -146,14 +155,74 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
                 mypopup.dismiss();
         }
     }
+    private void sortAlphabetical()
+    {
+        Collections.sort(foodList,new Comparator<Food>(){
+            @Override
+            public int compare(Food o1, Food o2){
+                return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+            }
+        });
 
+    }
+    private void sortDate()
+    {
+        Comparator<Food> byDate = new Comparator<Food>(){
+            public int compare(Food f1, Food f2){
+                if(f1.getDaysUntilExp() < f2.getDaysUntilExp())
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+        };
+        Collections.sort(foodList,byDate);
+    }
+    private void sortCategory()
+    {
+        Comparator<Food> byCategory = new Comparator<Food>(){
+            public int compare(Food f1, Food f2){
+                if(f1.getIconId() < f2.getIconId())
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+        };
+        Collections.sort(foodList,byCategory);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_general, menu);
         return true;
     }
-
+    public class CustomComparatorAlpha implements Comparator<Food> {
+        @Override
+        public int compare(Food o1, Food o2) {
+            return o1.getName().compareTo(o2.getName());
+        }
+    }
+    public class CustomComparatorDate implements Comparator<Food> {
+        @Override
+        public int compare(Food o1, Food o2) {
+            if(o1.getDaysUntilExp() < o2.getDaysUntilExp())
+            {
+                return -1;
+            }
+            else if(o1.getDaysUntilExp() > o2.getDaysUntilExp())
+            {
+                return 1;
+            }
+            return 0;
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
