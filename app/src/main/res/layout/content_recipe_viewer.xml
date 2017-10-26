@@ -35,7 +35,7 @@
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_marginStart="6dp"
-        android:text="Enter in a list of ingredients that are about to expire  (seperated by commas) and we'll find some creative ways to use those items. (Access advanced settings on the Settings page.) \n\t example: apples,flour,sugar"
+        android:text="Enter in a list of ingredients you want to use (seperated by commas) and we'll find some creative ways to use those items.  \n\t\t example: apples,flour,sugar"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintBottom_creator="1"
         app:layout_constraintBottom_toTopOf="@+id/Submit"

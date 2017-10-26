@@ -1,6 +1,7 @@
 package cs301rclass.myapplicationattempt4;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.net.ParseException;
@@ -35,12 +36,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import static cs301rclass.myapplicationattempt4.R.drawable.dairy;
 
 
-public class AddItemPage extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class AddItemPage extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
+        View.OnFocusChangeListener{
 
     Button addItem;
     Button Cancel;
     EditText Name;
-    EditText DateCal;
     TextView Title;
     Spinner dropdown;
     Food addition = new Food();
@@ -58,7 +59,7 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_add_item_page);
 
         Name = (EditText)findViewById(R.id.ItemName);
-        DateCal = (EditText) findViewById(R.id.Date);
+        Name.setOnFocusChangeListener(this);
         Title = (TextView) findViewById(R.id.Title);
         dateView = (EditText) findViewById(R.id.Date);
         dropdown = (Spinner) findViewById(R.id.dropdownMenu);
@@ -220,27 +221,6 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
         if(date.length() == 0)
             return false;
 
-        //if date not valid return false;
-//        if(date.length() == 0)
-//            return false;
-//        try
-//        {
-//            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-//            df.setLenient(false);
-//            df.parse(date);
-//        }
-//        catch(Exception e)
-//        {
-//            return false;
-//        }
-//
-//        if(name.length() == 0)
-//            return false;
-//
-//        if(name.equals("Enter Name of Product Here"))
-//            return false;
-
-        //or can add item to fire base here
         addition.setName(name);
         addition.setExpDate(date);
         addition.calculateDaysLeft();
@@ -309,4 +289,13 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
 
         return (int) dayCount + 1;
     }
+
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (!hasFocus) {
+                InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+        }
 }

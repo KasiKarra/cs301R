@@ -9,8 +9,8 @@
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp"
     android:theme="@style/AppThemeAddItem"
-
-    >
+    android:clickable="true"
+    android:focusableInTouchMode="true" >
 
     <!-- This extra linear layout is here so that nothing is auto focused
     when the app opens up-->

@@ -47,7 +47,7 @@ import java.util.List;
 
 enum sortingType {ALPHABETICAL, CATEGORICAL, EXPIRATION}
 
-public class dataPage extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+public class dataPage extends AppCompatActivity implements View.OnClickListener {
 
     private List<Food> foodList = new ArrayList<Food>();
     private Button popupSelect;
@@ -57,12 +57,11 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
     private PopupWindow mypopup;
     private sortingType type = sortingType.ALPHABETICAL;
     private FirebaseAuth auth;
-    private static GestureDetector gd;
     private ListView list;
     ArrayAdapter<Food> adapter;
     private Food selectedFood;
     private TextView sortingTypeTextBox;
-    private Button RecipeViewer;
+    private Button RecipeButton;
     private ImageButton Sort, AddItem;
     private FirebaseUser user;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -76,8 +75,8 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
         setSupportActionBar(tools);
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        RecipeViewer = (Button) findViewById (R.id.RecipeButton);
-        RecipeViewer.setOnClickListener(this);
+        RecipeButton = (Button) findViewById (R.id.RecipeButton);
+        RecipeButton.setOnClickListener(this);
         Sort = (ImageButton) findViewById(R.id.sort);
         Sort.setOnClickListener(this);
         AddItem = (ImageButton) findViewById(R.id.AddItemButton);
@@ -88,8 +87,6 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
         list.setAdapter(adapter);
         populateFoodList();
         registerClickCallback();
-
-        gd = new GestureDetector(this.getApplicationContext(), new GestureListener());
 
     }
 
@@ -141,7 +138,7 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
                 ShowPopupWindow();
                 break;
             case R.id.RecipeButton:
-                //chaos insues . . . ?
+                getExpiringSoon();
                 break;
             case R.id.AddItemButton:
                 Intent intent = new Intent(this, AddItemPage.class);
@@ -165,6 +162,7 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
         });
 
     }
+
     private void sortDate()
     {
         Comparator<Food> byDate = new Comparator<Food>(){
@@ -197,6 +195,26 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
         };
         Collections.sort(foodList,byCategory);
     }
+
+    private void getExpiringSoon()
+    {
+        Intent intent = new Intent(this, RecipeViewer.class);
+        String ingreds = "";
+        if(foodList.size() > 0)
+        {
+            StringBuilder ingredients = new StringBuilder("");
+            for(int i = 0; i < foodList.size(); i++)
+                if(foodList.get(i).getDaysUntilExp() < 3)
+                    ingredients.append(foodList.get(i).getName() + ",");
+
+            String sending = ingredients.toString();
+            ingreds = sending.substring(0, (sending.length() - 1));
+
+        }
+        intent.putExtra("Ingredients", ingreds);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
@@ -242,6 +260,7 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
         if(id == R.id.RecipeIdeas)
         {
             Intent intent = new Intent(this, RecipeViewer.class);
+            intent.putExtra("Ingredients", "");
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -302,6 +321,19 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+
+            //sort before updating.  Helps during adds
+            if(type == sortingType.ALPHABETICAL)
+                sortAlphabetical();
+            else
+            {
+                if(type == sortingType.CATEGORICAL)
+                    sortCategory();
+                else
+                    sortDate();
+            }
+
+
             //make sure we have a view to work with(may be given null)
             View itemView = convertView;
             if (itemView == null) {
@@ -418,61 +450,6 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener,
 
 
         } catch (Exception e) {
-        }
-    }
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        return gd.onTouchEvent(event);
-    }
-
-    private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
-        private static final int SWIPE_THRESHOLD = 100;
-        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            boolean result = false;
-            try {
-                float diffY = e2.getY() - e1.getY();
-                float diffX = e2.getX() - e1.getX();
-                if (Math.abs(diffX) > Math.abs(diffY)) {
-                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                        if (diffX > 0) {
-                            onSwipeRight();
-                        } else {
-                            onSwipeLeft();
-                        }
-                        result = true;
-                    }
-                } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffY > 0) {
-                        onSwipeBottom();
-                    } else {
-                        onSwipeTop();
-                    }
-                    result = true;
-                }
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            return result;
-        }
-
-        public void onSwipeRight() {
-        }
-
-        public void onSwipeLeft() {
-        }
-
-        public void onSwipeTop() {
-        }
-
-        public void onSwipeBottom() {
         }
     }
 }

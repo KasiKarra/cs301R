@@ -1,9 +1,11 @@
 package cs301rclass.myapplicationattempt4;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +21,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -35,11 +39,16 @@ import java.util.List;
 import java.util.Map;
 
 
+import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.APIHelper;
 import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.Configuration;
 import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.controllers.APIController;
 import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.http.client.APICallBack;
 import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.http.client.HttpContext;
+import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.http.response.HttpResponse;
+import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.http.response.HttpStringResponse;
+import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.models.DynamicResponse;
 import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.models.FindByIngredientsModel;
+import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.models.RecipeURL;
 
 
 public class RecipeViewer extends AppCompatActivity {
@@ -51,6 +60,7 @@ public class RecipeViewer extends AppCompatActivity {
     APIController api;
     ListView list;
     ArrayAdapter<Recipe> adapter;
+    int numberToFind = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +74,29 @@ public class RecipeViewer extends AppCompatActivity {
         api = APIController.getInstance();
 
         Ingredients = (EditText) findViewById(R.id.Ingredients);
+        Ingredients.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
         Submit = (Button) findViewById(R.id.Submit);
         Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (Ingredients.getText().toString().length() > 0)
                 {
-                    //SpoonacularAPIAttempt();
-                    recipeResponses.add(new Recipe(100, "Apple Fritters", "https://spoonacular.com/recipeImages/Apple-fritters-556470.jpg"));
+                    SpoonacularAPIAttempt("");
+                    //dummy data for practicing without hitting the API
+                    //recipeResponses.add(new Recipe(100, "Apple Fritters", "https://spoonacular.com/recipeImages/Apple-fritters-556470.jpg"));
+
                 }
                 else {
                     recipeResponses.clear();
-                    recipeResponses.add(new Recipe(-1, "Please enter in your ingredients list!!", ""));
+                    recipeResponses.add(new Recipe(-1, "Please enter ingredients first!", ""));
                     populateListView();
                 }
 
@@ -91,6 +112,22 @@ public class RecipeViewer extends AppCompatActivity {
         adapter = new RecipeViewer.MyListAdapter();
         list = (ListView) findViewById(R.id.RecipeList);
         list.setAdapter(adapter);
+        registerClickCallback();
+
+        String s = getIntent().getStringExtra("Ingredients");
+        Ingredients.setText(s);
+        if(s.length() > 0)
+        {
+            if(s.compareTo("empty") == 0)
+            {
+                recipeResponses.add(new Recipe(-1, "Please enter ingredients first!", ""));
+                populateListView();
+            }
+            else
+            {
+                SpoonacularAPIAttempt(s);
+            }
+        }
     }
 
 
@@ -106,24 +143,33 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
 
 
     //using the spoonacular example given online
-    public void SpoonacularAPIAttempt() {
+    public void SpoonacularAPIAttempt(String s) {
         recipeResponses.clear();
         //   final String ingredients, final Boolean limitLicense,  final Integer number,  final Integer ranking,  Map<String, Object> queryParameters,
         //   final APICallBack<List<FindByIngredientsModel>> callBack
 
         final APICallBack<List<FindByIngredientsModel>> callBack = new APICallBack<List<FindByIngredientsModel>>() {
             @Override
-            public void onSuccess(HttpContext context, List<FindByIngredientsModel> response) {
+            public void onSuccess(HttpContext context, HttpResponse hr) {
                 //Success...
+                try {
+                    String _responseBody = ((HttpStringResponse)hr).getBody();
+                    List<FindByIngredientsModel> response = APIHelper.deserialize(_responseBody,
+                            new TypeReference<List<FindByIngredientsModel>>(){});
 
-                if(recipeResponses.size() > 0 && response.size() > 0)
-                    if(recipeResponses.get(0).getID() == -1)
-                        recipeResponses.clear();
+                    if (recipeResponses.size() > 0 && response.size() > 0)
+                        if (recipeResponses.get(0).getID() == -1)
+                            recipeResponses.clear();
 
-                for (int i = 0; i < response.size(); i++)
-                    recipeResponses.add((response.get(i)).Conversion());
-
-                populateListView();
+                    for (int i = 0; i < response.size(); i++)
+                        recipeResponses.add((response.get(i)).Conversion());
+                    populateListView();
+                }
+                catch(Exception e)
+                {
+                    if(recipeResponses.size() == 0)
+                        recipeResponses.add(new Recipe(-1, "Error with the API call.  Try Again", ""));
+                }
             }
 
             @Override
@@ -133,8 +179,9 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
             }
         };
 
-        //String in = Ingredients.getText().toString().trim();
-        api.findByIngredientsAsync("apples,flour,sugar", false, 10, 1, callBack);
+        if(s.isEmpty())
+            s = Ingredients.getText().toString().trim();
+        api.findByIngredientsAsync(s, false, numberToFind, 1, callBack);
 
         if (recipeResponses.size() != 0)
             populateListView();
@@ -150,7 +197,7 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
     }
 
     private void registerClickCallback() {
-        ListView list = (ListView) findViewById(R.id.RecipeList);
+        list = (ListView) findViewById(R.id.RecipeList);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
@@ -158,10 +205,31 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
 
                 if (clicked.getID() != -1)
                 {
-                    //do something
+                    getWebAddress(clicked.getID());
+
                 }
             }
         });
+    }
+
+    private void getWebAddress(int id)
+    {
+        //   final String ingredients, final Boolean limitLicense,  final Integer number,  final Integer ranking,  Map<String, Object> queryParameters,
+        //   final APICallBack<List<FindByIngredientsModel>> callBack
+
+        final APICallBack<DynamicResponse> callBack = new APICallBack<DynamicResponse>() {
+            @Override
+            public void onSuccess(HttpContext context, HttpResponse response) {
+
+            }
+            @Override
+            public void onFailure(HttpContext context, Throwable error) {
+                if(recipeResponses.size() == 0)
+                    recipeResponses.add(new Recipe(-1, "Error with the API call.  Try Again", ""));
+            }
+        };
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.epicurious.com/recipes/food/views/Char-Grilled-Beef-Tenderloin-with-Three-Herb-Chimichurri-235342"));
+        startActivity(browserIntent);
     }
 
     private class MyListAdapter extends ArrayAdapter<Recipe> {
@@ -229,5 +297,8 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
 
         return super.onOptionsItemSelected(item);
     }
-
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
