@@ -218,17 +218,39 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
     {
         Intent intent = new Intent(this, RecipeViewer.class);
         String ingreds = "";
-        if(foodList.size() > 0)
+        int largest = 3;
+        if(largest > foodList.size())
+            largest = foodList.size();
+        if(largest > 0)
         {
-            StringBuilder ingredients = new StringBuilder("");
-            for(int i = 0; i < foodList.size(); i++)
-                if(foodList.get(i).getDaysUntilExp() < 3)
-                    ingredients.append(foodList.get(i).getName() + ",");
+            if(type == sortingType.EXPIRATION)
+            {
+                StringBuilder s = new StringBuilder("");
+                for(int i =0; i < largest; i++)
+                    s.append(foodList.get(i).getName() + ",");
+                ingreds = s.toString();
+            }
 
-            String sending = ingredients.toString();
-            ingreds = sending.substring(0, (sending.length() - 1));
+            else
+            {
+                sortDate();
+                StringBuilder ingredients = new StringBuilder("");
+                for(int i = 0; i < largest; i++)
+                    if(foodList.get(i).getDaysUntilExp() < 3)
+                        ingredients.append(foodList.get(i).getName() + ",");
 
+                ingreds = ingredients.toString();
+
+                if(type == sortingType.ALPHABETICAL)
+                    sortAlphabetical();
+                if(type == sortingType.CATEGORICAL)
+                    sortCategory();
+            }
         }
+        if(ingreds.length() > 0)
+            ingreds = ingreds.substring(0, (ingreds.length() - 1));
+        else
+            ingreds = "potato";
         intent.putExtra("Ingredients", ingreds);
         startActivity(intent);
     }

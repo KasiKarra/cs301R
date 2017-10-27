@@ -7,6 +7,23 @@
     android:fitsSystemWindows="true"
     tools:context="cs301rclass.myapplicationattempt4.SignupActivity">
 
+    <!-- This extra linear layout is here so that nothing is auto focused
+    when the app opens up-->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable = "true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintRight_toLeftOf="parent"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -35,7 +52,7 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/input_login" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -54,7 +71,7 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/input_login" />
 
         </android.support.design.widget.TextInputLayout>
 
