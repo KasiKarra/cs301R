@@ -14,9 +14,16 @@ public class Deserilaizer
     public String Deserialize(String json)
     {
         String[] pieces = json.split(",");
-        if(pieces.length < 16)
+        if(pieces.length < 40)
             return "";
-        String finale = pieces[14];
+
+        String finale = "";
+        for(int i = 5; i < 40; i++)
+            if(pieces[i].contains("sourceUrl")) {
+                finale = pieces[i];
+                i = 41;
+            }
+
         if(finale.length() < 16)
             return "";
         finale = finale.substring(13, (finale.length() - 1));
