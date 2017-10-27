@@ -41,6 +41,7 @@ import java.util.Map;
 
 import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.APIHelper;
 import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.Configuration;
+import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.Deserilaizer;
 import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.controllers.APIController;
 import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.http.client.APICallBack;
 import cs301rclass.com.mashape.p.spoonacularrecipefoodnutritionv1.http.client.HttpContext;
@@ -62,6 +63,7 @@ public class RecipeViewer extends AppCompatActivity {
     ArrayAdapter<Recipe> adapter;
     int numberToFind = 10;
     TextView instructions;
+    Deserilaizer deserilaizer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +135,7 @@ public class RecipeViewer extends AppCompatActivity {
         }
 
         instructions = (TextView) findViewById(R.id.instructions);
+        deserilaizer = new Deserilaizer();
     }
 
 
@@ -219,17 +222,15 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
 
     private void getWebAddress(int id)
     {
-        //   final String ingredients, final Boolean limitLicense,  final Integer number,  final Integer ranking,  Map<String, Object> queryParameters,
-        //   final APICallBack<List<FindByIngredientsModel>> callBack
 
         final APICallBack<DynamicResponse> callBack = new APICallBack<DynamicResponse>() {
             @Override
             public void onSuccess(HttpContext context, HttpResponse response) {
                 try {
                     String _responseBody = ((HttpStringResponse) response).getBody();
-                    RecipeURL destination = APIHelper.deserialize(_responseBody, new TypeReference<RecipeURL>() {});
 
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destination.getSourceURL()));
+                    String url = deserilaizer.Deserialize(_responseBody);
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(browserIntent);
                 }
                 catch(Exception e)
@@ -244,6 +245,8 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
                     recipeResponses.add(new Recipe(-1, "Error with the API call.  Try Again", ""));
             }
         };
+
+        api.getRecipeInformationAsync(id, callBack);
     }
 
     private class MyListAdapter extends ArrayAdapter<Recipe> {
