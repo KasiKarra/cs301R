@@ -60,6 +60,7 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
 
         Name = (EditText)findViewById(R.id.ItemName);
         Name.setOnFocusChangeListener(this);
+
         Title = (TextView) findViewById(R.id.Title);
         dateView = (EditText) findViewById(R.id.Date);
         dropdown = (Spinner) findViewById(R.id.dropdownMenu);
@@ -68,7 +69,14 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
         showDate(year,month+1,day);
-
+        dateView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    setDate(v);
+                }
+            }
+        });
 
 
         addItem = (Button)findViewById(R.id.SubmitButton);
@@ -114,6 +122,7 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown.setAdapter(adapter);
     }
+
     @SuppressWarnings("deprecation")
     public void setDate(View view) {
         showDialog(999);
@@ -148,6 +157,8 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
         }
         return R.drawable.nuts;
     }
+
+
     private FoodCategory getFoodType(String foodType)
     {
         switch(foodType){
@@ -296,6 +307,8 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
             if (!hasFocus) {
                 InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
             }
+            
         }
 }
