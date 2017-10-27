@@ -73,6 +73,7 @@
         android:onClick="setDate"
 
         android:selectAllOnFocus="true"
+        android:text="Exp. Date"
         android:textIsSelectable="false"
         app:layout_constraintLeft_toLeftOf="@+id/ItemName"
         app:layout_constraintRight_toRightOf="@+id/ItemName"
@@ -119,5 +120,17 @@
         app:layout_constraintTop_toBottomOf="@+id/Date"
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="@+id/Date" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="7dp"
+        android:text="Exp. Date:"
+        app:layout_constraintLeft_toLeftOf="@+id/Date"
+        app:layout_constraintTop_toTopOf="@+id/Date"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
 </android.support.constraint.ConstraintLayout>
