@@ -24,14 +24,14 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintBottom_creator="1"
         app:layout_constraintBottom_toBottomOf="@+id/Submit"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/instructions"
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/instructions"
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_marginStart="6dp"
@@ -67,8 +67,8 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintBottom_creator="1"
         app:layout_constraintBottom_toTopOf="@+id/RecipeList"
-        app:layout_constraintRight_toRightOf="@+id/textView"
+        app:layout_constraintRight_toRightOf="@+id/instructions"
         tools:layout_constraintLeft_creator="1"
         android:layout_marginBottom="21dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView" />
+        app:layout_constraintLeft_toRightOf="@+id/instructions" />
 </android.support.constraint.ConstraintLayout>

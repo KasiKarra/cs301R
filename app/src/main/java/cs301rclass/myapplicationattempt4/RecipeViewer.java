@@ -61,6 +61,7 @@ public class RecipeViewer extends AppCompatActivity {
     ListView list;
     ArrayAdapter<Recipe> adapter;
     int numberToFind = 10;
+    TextView instructions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,8 @@ public class RecipeViewer extends AppCompatActivity {
         Ingredients.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                instructions.setText("Enter in a list of ingredients you want to use (seperated by commas) and we'll find some creative ways to use those items.  \\n\\t\\t example: apples,flour,sugar");
+                instructions.setTextColor(getResources().getColor(R.color.Black));
                 if (!hasFocus) {
                     hideKeyboard(v);
                 }
@@ -128,6 +131,8 @@ public class RecipeViewer extends AppCompatActivity {
                 SpoonacularAPIAttempt(s);
             }
         }
+
+        instructions = (TextView) findViewById(R.id.instructions);
     }
 
 
@@ -220,7 +225,18 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
         final APICallBack<DynamicResponse> callBack = new APICallBack<DynamicResponse>() {
             @Override
             public void onSuccess(HttpContext context, HttpResponse response) {
+                try {
+                    String _responseBody = ((HttpStringResponse) response).getBody();
+                    RecipeURL destination = APIHelper.deserialize(_responseBody, new TypeReference<RecipeURL>() {});
 
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destination.getSourceURL()));
+                    startActivity(browserIntent);
+                }
+                catch(Exception e)
+                {
+                    instructions.setText("Error getting the url from the API");
+                    instructions.setTextColor(getResources().getColor(R.color.ErrorCodeRed));
+                }
             }
             @Override
             public void onFailure(HttpContext context, Throwable error) {
@@ -228,8 +244,6 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/
                     recipeResponses.add(new Recipe(-1, "Error with the API call.  Try Again", ""));
             }
         };
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.epicurious.com/recipes/food/views/Char-Grilled-Beef-Tenderloin-with-Three-Herb-Chimichurri-235342"));
-        startActivity(browserIntent);
     }
 
     private class MyListAdapter extends ArrayAdapter<Recipe> {
