@@ -75,6 +75,7 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
                 if (hasFocus) {
                     setDate(v);
                 }
+
             }
         });
 
@@ -309,6 +310,6 @@ public class AddItemPage extends AppCompatActivity implements AdapterView.OnItem
                 inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
             }
-            
+
         }
 }

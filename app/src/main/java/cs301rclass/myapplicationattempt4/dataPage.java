@@ -236,7 +236,7 @@ public class dataPage extends AppCompatActivity implements View.OnClickListener 
                 sortDate();
                 StringBuilder ingredients = new StringBuilder("");
                 for(int i = 0; i < largest; i++)
-                    if(foodList.get(i).getDaysUntilExp() < 3)
+                    //if(foodList.get(i).getDaysUntilExp() < 3)
                         ingredients.append(foodList.get(i).getName() + ",");
 
                 ingreds = ingredients.toString();
